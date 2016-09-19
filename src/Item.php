@@ -75,22 +75,18 @@
             $GLOBALS['DB']->exec("DELETE FROM items;");
         }
 
-        static function find ($search_id)
+        static function find($search_id)
         {
-            $found_item = null;
+            $found = null;
             $items = Item::getAll();
             foreach($items as $item) {
                 $item_id = $item->getId();
                 if ($item_id == $search_id) {
-                    $found_item = $item;
+                    $found = $item;
                 }
-                return $found_item;
             }
+            return $found;
         }
 
-
     }
-
-
-
 ?>

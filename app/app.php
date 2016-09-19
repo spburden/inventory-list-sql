@@ -39,5 +39,11 @@
         return $app['twig']->render("home.html.twig", array('items' => $items));
     });
 
+    $app->post("/search", function () use ($app) {
+        $index = (int) ($_POST['input']);
+        $result = Item::find($index);
+        return $app['twig']->render("results.html.twig", array('result' => $result));
+    });
+
     return $app;
 ?>

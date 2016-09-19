@@ -8,7 +8,7 @@
       {% if items is not empty %}
       <ul>
           {% for item in items %}
-          <li>{{ item.getName }} {{ item.getDescription }}  {{ item.getQuantity }}</li>
+          <li>ID: {{ item.getId }} {{ item.getName }} {{ item.getDescription }} {{ item.getQuantity }}</li>
           {% endfor %}
       </ul>
       {% endif %}
@@ -23,6 +23,11 @@
         </form>
         <form action="/delete" method="post">
             <button type="submit" name="button">Clear List</button>
+        </form>
+        <form class="" action="/search" method="post">
+            <p>Search by ID</p>
+            <input type="number" name="input" value="">
+            <button type="submit">Search</button>
         </form>
   </body>
 </html>
