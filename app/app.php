@@ -18,16 +18,25 @@
 
   //loads actual twig file
     $app->get("/", function() use ($app) {
-      return $app['twig']->render("home.html.twig");
+      $items = array();
+      return $app['twig']->render("home.html.twig", array('items' => $items));
     });
 
   //loads basic php
-    $app->post("/result", function() use ($app) {
+    $app->post("/inventory", function() use ($app) {
         $name = $_POST['name'];
         $description = $_POST['description'];
         $quantity = $_POST['quantity'];
-        $newItem = new Item($name, $description, $quantity);
-        return $app['twig']->render("result.html.twig", array('newItem' => $newItem));
+        $item = new Item($name, $description, $quantity);
+        $item->save();
+
+        return $app['twig']->render("home.html.twig", array('items' => Item::getAll()));
+    });
+
+    $app->post("/delete", function () use ($app) {
+        $items = array();
+        Item::deleteAll();
+        return $app['twig']->render("home.html.twig", array('items' => $items));
     });
 
     return $app;

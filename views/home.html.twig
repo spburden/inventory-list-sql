@@ -1,17 +1,28 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Template</title>
+    <title>Inventory</title>
   </head>
   <body>
-        <form action="/result" method="post">
+      <h1>Inventory</h1>
+      {% if items is not empty %}
+      <ul>
+          {% for item in items %}
+          <li>{{ item.getName }} {{ item.getDescription }}  {{ item.getQuantity }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+        <form action="/inventory" method="post">
             <p>Item Name</p>
             <input type="text" name="name" value="" required>
-            <p>Item Description</p>
+            <p>Description</p>
             <input type="text" name="description" value="" required>
-            <p>Item Number</p>
+            <p>Quantity</p>
             <input type="number" name="quantity" value="" min='1'>
             <button type="submit" name="button">Submit</button>
+        </form>
+        <form action="/delete" method="post">
+            <button type="submit" name="button">Clear List</button>
         </form>
   </body>
 </html>
