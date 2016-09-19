@@ -4,7 +4,14 @@
     <title>Template</title>
   </head>
   <body>
-      <p>hi</p>
-      <a href="/test"><button type="submit" name="button">Tester</button></a>
+        <form action="/result" method="post">
+            <p>Item Name</p>
+            <input type="text" name="name" value="" required>
+            <p>Item Description</p>
+            <input type="text" name="description" value="" required>
+            <p>Item Number</p>
+            <input type="number" name="quantity" value="" min='1'>
+            <button type="submit" name="button">Submit</button>
+        </form>
   </body>
 </html>

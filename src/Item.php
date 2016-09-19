@@ -6,12 +6,12 @@
         private $description;
         private $quantity;
 
-        function __construct($id = null, $name, $description = null, $quantity = 1)
+        function __construct($name, $description, $quantity, $id = null)
         {
-            $this->id = $id;
             $this->name = $name;
             $this->description = $description;
             $this->quantity = $quantity;
+            $this->id = $id;
         }
 
         function getId()
@@ -51,26 +51,45 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO items (name, description, quantity) VALUES ('{$this->getName()}', '{$this->getDescription()}', {$this->getQuantity()})");
-            // $GLOBALS['DB']->exec("INSERT INTO items (description) VALUES ('{$this->getDescription()}')");
-            // $GLOBALS['DB']->exec("INSERT INTO items (quantity) VALUES ('{$this->getQuantity()}')");
+            $GLOBALS['DB']->exec("INSERT INTO items (name, description, quantity) VALUES ('{$this->getName()}', '{$this->getDescription()}', {$this->getQuantity()});");
+            $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
         static function getAll()
         {
-            $returned_items = $GLOBALS['DB']->query("SELECT * FROM tasks;");
+            $returned_items = $GLOBALS['DB']->query("SELECT * FROM items;");
             $items = array();
             foreach($returned_items as $item) {
-                $id = $item['id'];
                 $name = $item['name'];
                 $description = $item['description'];
                 $quantity = $item['quantity'];
-                $new_item = new Item($id, $name, $description, $quantity);
+                $id = $item['id'];
+                $new_item = new Item($name, $description, $quantity, $id);
                 array_push($items, $new_item);
                 }
-        return $items;    
+            return $items;
         }
 
+        static function deleteAll()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM items;");
+        }
+
+        static function find ($search_id)
+        {
+            $found_item = null;
+            $items = Item::getAll();
+            foreach($items as $item) {
+                $item_id = $item->getId();
+                if ($item_id == $search_id) {
+                    $found_item = $item;
+                }
+                return $found_item;
+            }
+        }
+
+
+    }
 
 
 

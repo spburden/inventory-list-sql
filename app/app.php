@@ -22,8 +22,12 @@
     });
 
   //loads basic php
-    $app->get("/items", function() use ($app) {
-      return 'test variables here';
+    $app->post("/result", function() use ($app) {
+        $name = $_POST['name'];
+        $description = $_POST['description'];
+        $quantity = $_POST['quantity'];
+        $newItem = new Item($name, $description, $quantity);
+        return $app['twig']->render("result.html.twig", array('newItem' => $newItem));
     });
 
     return $app;

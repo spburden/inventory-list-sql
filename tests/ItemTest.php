@@ -7,28 +7,29 @@
 
     require_once "src/Item.php";
 
-    $server = 'mysql:host=localhost:8889;dbname=to_do_test';
+    $server = 'mysql:host=localhost;dbname=inventory_test';
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
 
     class ItemTest extends PHPUnit_Framework_TestCase
-
+    {
     //run test in terminal: ./vendor/bin/phpunit tests
 
     //on Mac: run: export PATH=$PATH:./vendor/bin
     //then run phpunit tests
-    {
-
-    }
+        protected function tearDown()
+        {
+            Item::deleteAll();
+        }
 
        function test_save()
        {
            //Arrange
-           $test_item = new Item($name, $description, $quantity);
            $name = "Tennis Ball";
            $description = "Yellow ball";
            $quantity = 23;
+           $test_item = new Item($name, $description, $quantity);
 
            //Act
            $test_item->save();
@@ -38,19 +39,63 @@
            $this->assertEquals($test_item, $result[0]);
        }
 
-        //TEST FOR LOOPING THROUGH MULTIPLE INPUTS
-    //   function test_numword_ones()
-    // {
-    //     $test_NumWord_Ones = new Numword;
-    //     $input_array = ['0','1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    //     $expected_results = ['','One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
-    //     $result_array = array();
-    //
-    //     foreach ($input_array as $input)
-    //     {
-    //       array_push($result_array, $test_NumWord_Ones->process_thru_nineteen($input));
-    //     }
-    //     $this->assertEquals($expected_results, $result_array);
-    // }
+       function test_getAll()
+       {
+           //Arrange
+           $name1 = "Tennis Ball";
+           $description1 = "Yellow ball";
+           $quantity1 = 23;
+           $test_item1 = new Item($name1, $description1, $quantity1);
+           $test_item1->save();
+           $name2 = "Basket Ball";
+           $description2 = "Orange ball";
+           $quantity2 = 14;
+           $test_item2 = new Item($name2, $description2, $quantity2);
+           $test_item2->save();
 
+           //Act
+           $result = Item::getAll();
+
+           //Assert
+           $this->assertEquals([$test_item1, $test_item2], $result);
+       }
+
+       function test_getId()
+       {
+           //Arrange
+           $name = "Tennis Ball";
+           $description = "Yellow ball";
+           $quantity = 23;
+           $id = 1;
+           $test_item = new Item($name, $description, $quantity, $id);
+
+           //Act
+           $result = $test_item->getId();
+
+           //Assert
+           $this->assertEquals(1, $result);
+       }
+
+       function test_find()
+       {
+           $name1 = "Tennis Ball";
+           $description1 = "Yellow ball";
+           $quantity1 = 23;
+           $test_item1 = new Item($name1, $description1, $quantity1);
+           $test_item1->save();
+           $name2 = "Basket Ball";
+           $description2 = "Orange ball";
+           $quantity2 = 14;
+           $test_item2 = new Item($name2, $description2, $quantity2);
+           $test_item2->save();
+
+           //Act
+           $id = $test_item1->getId();
+           $result = Item::find($id);
+
+           //Assert
+           $this->assertEquals($test_item1, $result);
+       }
+
+    }
  ?>
